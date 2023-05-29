@@ -57,6 +57,9 @@ public:
 	uintptr_t GetModuleAddress(const std::string& moduleBase);
 
 public:
+	uintptr_t GetProcAddress(uintptr_t remoteModuleBase, const std::string& ordinalName);
+
+public:
 	uint32_t m_Pid;
 	HANDLE m_Handle;
 	std::string m_Name;

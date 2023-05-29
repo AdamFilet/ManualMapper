@@ -1,6 +1,7 @@
 #include "Process.hpp"
 #include "ProcessHelpers.hpp"
 
+#include <vector>
 #include <algorithm>
 #include <TlHelp32.h>
 
@@ -47,7 +48,7 @@ uintptr_t Process::AllocateMemory(uint32_t size, uint32_t allocationType, uint32
 uintptr_t Process::GetModuleAddress(const std::string& moduleBase)
 {
 	uintptr_t modBaseAddress = 0;
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, this->m_PID);
+	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, m_Pid);
 	if (!hSnap)
 	{
 		return 0;
@@ -76,4 +77,71 @@ uintptr_t Process::GetModuleAddress(const std::string& moduleBase)
 	}
 	CloseHandle(hSnap);
 	return modBaseAddress;
+}
+
+uintptr_t Process::GetProcAddress(uintptr_t remoteModuleBase, const std::string& ordinalName)
+{
+	if (remoteModuleBase == 0)
+	{
+		return {};
+	}
+
+	IMAGE_DOS_HEADER dosHeader;
+	if (!this->Read(remoteModuleBase, dosHeader))
+	{
+		return {};
+	}
+
+	IMAGE_NT_HEADERS ntHeader;
+	if (!this->Read(dosHeader.e_lfanew + remoteModuleBase, ntHeader))
+	{
+		return {};
+	}
+
+	uintptr_t exportBase = ntHeader.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress;
+	if (exportBase == 0)
+	{
+		return {};
+	}
+
+	uint32_t exportSize = ntHeader.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].Size;
+	std::vector<uint8_t> exportInfo(exportSize);
+	if (!this->Read(reinterpret_cast<void*>(remoteModuleBase + exportBase), exportInfo.data(), exportSize))
+	{
+		return {};
+	}
+
+	IMAGE_EXPORT_DIRECTORY* exportData = reinterpret_cast<IMAGE_EXPORT_DIRECTORY*>(exportInfo.data());
+	uint16_t* addressOfOrds = reinterpret_cast<uint16_t*>(exportData->AddressOfNameOrdinals + reinterpret_cast<uintptr_t>(exportInfo.data()) - exportBase);
+	uint32_t* addressOfNames = reinterpret_cast<uint32_t*>(exportData->AddressOfNames + reinterpret_cast<uintptr_t>(exportInfo.data()) - exportBase);
+	uint32_t* addressOfFuncs = reinterpret_cast<uint32_t*>(exportData->AddressOfFunctions + reinterpret_cast<uintptr_t>(exportInfo.data()) - exportBase);
+
+	uintptr_t procAddress = 0;
+
+	for (uint32_t i = 0; i < exportData->NumberOfFunctions; ++i)
+	{
+		uint16_t ordinalIndex = 0xFFFF;
+		char* name = nullptr;
+		if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) <= 0xFFFF)
+		{
+			ordinalIndex = static_cast<WORD>(i);
+		}
+		else if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) > 0xFFFF && i < exportData->NumberOfNames)
+		{
+			name = (char*)(addressOfNames[i] + reinterpret_cast<uintptr_t>(exportInfo.data()) - exportBase);
+			ordinalIndex = static_cast<WORD>(addressOfOrds[i]);
+		}
+		else
+		{
+			return 0;
+		}
+
+		if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) <= 0xFFFF && static_cast<uint16_t>(reinterpret_cast<uintptr_t>(ordinalName.c_str()) == (ordinalIndex + exportData->Base)) || (reinterpret_cast<uintptr_t>(ordinalName.c_str()) > 0xFFFF && ordinalName.compare(name) == 0))
+		{
+			procAddress = addressOfFuncs[ordinalIndex] + remoteModuleBase;
+			break;
+		}
+	}
+
+	return procAddress;
 }
