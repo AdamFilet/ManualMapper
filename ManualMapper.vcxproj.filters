@@ -19,6 +19,12 @@
     <Filter Include="Source Files\PE">
       <UniqueIdentifier>{ce78facb-2a4a-418b-a3d7-a87553dd7c3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Process">
+      <UniqueIdentifier>{d71741d6-0d5d-4d5b-983b-bbfaf22670f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Process">
+      <UniqueIdentifier>{4d7591c0-ca84-4e07-ab4d-aa2d11c7157e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entry.cpp">
@@ -27,10 +33,22 @@
     <ClCompile Include="PE\PE.cpp">
       <Filter>Source Files\PE</Filter>
     </ClCompile>
+    <ClCompile Include="Process\Process.cpp">
+      <Filter>Source Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\ProcessHelpers.cpp">
+      <Filter>Source Files\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PE\PE.hpp">
       <Filter>Header Files\PE</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\Process.hpp">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\ProcessHelpers.hpp">
+      <Filter>Header Files\Process</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
