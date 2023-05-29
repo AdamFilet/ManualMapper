@@ -53,6 +53,9 @@ public:
 	bool Write(void* address, const void* value, size_t size);
 
 public:
+	uint64_t AllocateMemory(uint32_t size, uint32_t allocationType, uint32_t allocationProtect);
+
+public:
 	uint32_t m_Pid;
 	HANDLE m_Handle;
 	std::string m_Name;

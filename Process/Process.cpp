@@ -35,3 +35,8 @@ bool Process::Write(void* address, const void* value, size_t size)
 {
 	return WriteProcessMemory(this->m_Handle, address, value, size, nullptr);
 }
+
+uint64_t Process::AllocateMemory(uint32_t size, uint32_t allocationType, uint32_t allocationProtect)
+{
+	return reinterpret_cast<uint64_t>(VirtualAllocEx(this->m_Handle, 0, size, allocationType, allocationProtect));
+}
