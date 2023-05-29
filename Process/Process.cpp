@@ -45,6 +45,11 @@ uintptr_t Process::AllocateMemory(uint32_t size, uint32_t allocationType, uint32
 	return reinterpret_cast<uintptr_t>(VirtualAllocEx(this->m_Handle, 0, size, allocationType, allocationProtect));
 }
 
+bool Process::Protect(uintptr_t address, uint32_t size, uint32_t protection, uint32_t& oldProtection)
+{
+	return VirtualProtectEx(this->m_Handle, reinterpret_cast<LPVOID>(address), size, protection, reinterpret_cast<PDWORD>(&oldProtection));
+}
+
 uintptr_t Process::GetModuleAddress(const std::string& moduleBase)
 {
 	uintptr_t modBaseAddress = 0;

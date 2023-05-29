@@ -54,6 +54,7 @@ public:
 
 public:
 	uintptr_t AllocateMemory(uint32_t size, uint32_t allocationType, uint32_t allocationProtect);
+	bool Protect(uintptr_t address, uint32_t size, uint32_t protection, uint32_t& oldProtection);
 	uintptr_t GetModuleAddress(const std::string& moduleBase);
 
 public:
