@@ -195,5 +195,4 @@ bool PEHelpers::FixProtections(PE& file, Process& process, uintptr_t image)
 			return false;
 		}
 	}
-
 }
