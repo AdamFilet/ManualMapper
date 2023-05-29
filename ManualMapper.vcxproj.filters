@@ -39,6 +39,15 @@
     <ClCompile Include="Process\ProcessHelpers.cpp">
       <Filter>Source Files\Process</Filter>
     </ClCompile>
+    <ClCompile Include="PE\PEHelpers.cpp">
+      <Filter>Source Files\PE</Filter>
+    </ClCompile>
+    <ClCompile Include="Mapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SchemaResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PE\PE.hpp">
@@ -49,6 +58,18 @@
     </ClInclude>
     <ClInclude Include="Process\ProcessHelpers.hpp">
       <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Mapper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PE\PEHelpers.hpp">
+      <Filter>Header Files\PE</Filter>
+    </ClInclude>
+    <ClInclude Include="SchemaResolver.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Native.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
