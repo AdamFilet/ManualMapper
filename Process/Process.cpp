@@ -68,7 +68,7 @@ uintptr_t Process::GetModuleAddress(const std::string& moduleBase)
 			std::string currentModuleNameLower = std::string(modEntry.szModule);
 			std::transform(currentModuleNameLower.begin(), currentModuleNameLower.end(), currentModuleNameLower.begin(), [](char c) -> char { return ::tolower(c); });
 
-			if (!moduleName.compare(currentModuleNameLower))
+			if (!moduleNameToLower.compare(currentModuleNameLower))
 			{
 				modBaseAddress = (uintptr_t)modEntry.modBaseAddr;
 				break;
