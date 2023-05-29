@@ -7,7 +7,7 @@
 class PE
 {
 public:
-	bool Initalize(const std::string& path);
+	bool Initialize(const std::string& path);
 
 public:
 	uint32_t m_ImageSize;

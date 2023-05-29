@@ -3,7 +3,7 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
-bool PE::Initalize(const std::string& path)
+bool PE::Initialize(const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary);
 	if (!file.is_open())
