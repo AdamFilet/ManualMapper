@@ -45,7 +45,7 @@ public:
 	template<typename T>
 	bool Write(uintptr_t address, const T& value)
 	{
-		return this->Write<T>(reinterpret_cast<void*>(address), value);
+		return this->Write(reinterpret_cast<void*>(address), &value, sizeof(T));
 	}
 
 public:
@@ -53,7 +53,8 @@ public:
 	bool Write(void* address, const void* value, size_t size);
 
 public:
-	uint64_t AllocateMemory(uint32_t size, uint32_t allocationType, uint32_t allocationProtect);
+	uintptr_t AllocateMemory(uint32_t size, uint32_t allocationType, uint32_t allocationProtect);
+	uintptr_t GetModuleAddress(const std::string& moduleBase);
 
 public:
 	uint32_t m_Pid;
