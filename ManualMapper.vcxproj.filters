@@ -13,5 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\PE">
+      <UniqueIdentifier>{46cfeb4a-5700-4909-a65f-5e60fd9b3f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PE">
+      <UniqueIdentifier>{ce78facb-2a4a-418b-a3d7-a87553dd7c3c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="entry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PE\PE.cpp">
+      <Filter>Source Files\PE</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PE\PE.hpp">
+      <Filter>Header Files\PE</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
