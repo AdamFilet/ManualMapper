@@ -127,11 +127,13 @@ uintptr_t Process::GetProcAddress(uintptr_t remoteModuleBase, const std::string&
 	{
 		uint16_t ordinalIndex = 0xFFFF;
 		char* name = nullptr;
-		if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) <= 0xFFFF)
+		uintptr_t ordinal = reinterpret_cast<uintptr_t>(ordinalName.c_str());
+
+		if (ordinal <= 0xFFFF)
 		{
 			ordinalIndex = static_cast<WORD>(i);
 		}
-		else if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) > 0xFFFF && i < exportData->NumberOfNames)
+		else if (ordinal > 0xFFFF && i < exportData->NumberOfNames)
 		{
 			name = (char*)(addressOfNames[i] + reinterpret_cast<uintptr_t>(exportInfo.data()) - exportBase);
 			ordinalIndex = static_cast<WORD>(addressOfOrds[i]);
@@ -141,7 +143,7 @@ uintptr_t Process::GetProcAddress(uintptr_t remoteModuleBase, const std::string&
 			return 0;
 		}
 
-		if (reinterpret_cast<uintptr_t>(ordinalName.c_str()) <= 0xFFFF && static_cast<uint16_t>(reinterpret_cast<uintptr_t>(ordinalName.c_str()) == (ordinalIndex + exportData->Base)) || (reinterpret_cast<uintptr_t>(ordinalName.c_str()) > 0xFFFF && ordinalName.compare(name) == 0))
+		if (ordinal <= 0xFFFF && ordinal == (ordinalIndex + exportData->Base) || ordinal > 0xFFFF && ordinalName.compare(name) == 0)
 		{
 			procAddress = addressOfFuncs[ordinalIndex] + remoteModuleBase;
 			break;
