@@ -18,5 +18,5 @@ This is a basic manual mapper is capable of loading a DLL into another Process
 3. Select a process 
 4. Call map image
 
-## Example
-Example located in entry.cpp
+# How to use it
+[Example](https://github.com/AdamFilet/ManualMapper/blob/main/entry.cpp)
