@@ -18,8 +18,5 @@ This is a basic manual mapper is capable of loading a DLL into another Process
 3. Select a process 
 4. Call map image
 
-# Example
-Mapper map;
-map.SelectFile(DLLPATh); 
-map.SelectProcess(PROCESS_NAME);  
-map.MapImage(); 
+## Example
+Example located in entry.cpp
