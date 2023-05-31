@@ -196,3 +196,32 @@ bool PEHelpers::FixProtections(PE& file, Process& process, uintptr_t image)
 		}
 	}
 }
+
+IMAGE_SECTION_HEADER* PEHelpers::FindSectionByName(const HMODULE moduleHandle, const std::string& sectionName)
+{
+	if (moduleHandle == nullptr)
+	{
+		return nullptr;
+	}
+
+	IMAGE_DOS_HEADER* dosHeader = reinterpret_cast<IMAGE_DOS_HEADER*>(moduleHandle);
+	IMAGE_NT_HEADERS* ntHeader = reinterpret_cast<IMAGE_NT_HEADERS*>(reinterpret_cast<uintptr_t>(moduleHandle) + dosHeader->e_lfanew);
+	IMAGE_FILE_HEADER* fileHeader = &ntHeader->FileHeader;
+
+	std::string name = sectionName;
+	std::string sectionNameLower = std::string(name.cbegin(), name.cend());
+	std::transform(name.begin(), name.end(), name.begin(), [](char c) -> char { return ::tolower(c); });
+
+	IMAGE_SECTION_HEADER* sectionHeader = IMAGE_FIRST_SECTION(ntHeader);
+	for (uint32_t i = 0; i < fileHeader->NumberOfSections; ++i, ++sectionHeader)
+	{
+		std::string currentNameLower = reinterpret_cast<const char*>(sectionHeader->Name);
+		std::transform(currentNameLower.begin(), currentNameLower.end(), currentNameLower.begin(), [](char c) -> char { return ::tolower(c); });
+		if (sectionNameLower.compare(currentNameLower) == 0)
+		{
+			return sectionHeader;
+		}
+	}
+
+	return nullptr;
+}
