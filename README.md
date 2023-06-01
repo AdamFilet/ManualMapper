@@ -22,5 +22,5 @@ This is a basic manual mapper is capable of loading a DLL into another Process
 [Example](https://github.com/AdamFilet/ManualMapper/blob/main/entry.cpp)
 
 
-#vcpkg
+## vcpkg
 - spdlog
