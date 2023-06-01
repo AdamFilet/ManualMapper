@@ -1,5 +1,5 @@
 # Basic x64 Manual Mapper
-This is a basic manual mapper is capable of loading a DLL into another Process
+This is a basic manual mapper which is capable of loading a DLL into another Process
 
 ## Features
 - Copy Section
